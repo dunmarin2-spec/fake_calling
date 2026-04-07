@@ -1,0 +1,15 @@
+{
+  "name": "탈출전화",
+  "short_name": "탈출전화",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#4facfe",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3103/3103446.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
