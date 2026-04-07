@@ -45,7 +45,7 @@
         <hr style="width: 80%; border: 0.5px solid #333; margin: 20px 0;">
 
         <a href="https://qr.kakaopay.com/FRK8J0SAD" class="btn btn-pay">
-            💛 카카오페이로 응원하기
+            💛 개발자에게 커피한잔 후원하기
         </a>
         
         <p style="font-size: 0.75rem; color: #666; margin-top: 15px;">설치 후 실행하면 상단바 없이 사용 가능합니다.</p>
@@ -60,28 +60,45 @@
         </div>
     </div>
 
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js');
+<script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
+    }
+
+    let vibrationInterval; // 진동 반복을 제어할 변수
+
+    function startTimer() {
+        const name = document.getElementById('callerName').value;
+        const sec = document.getElementById('delay').value;
+        document.getElementById('display-name').innerText = name;
+
+        alert(sec + "초 뒤에 전화가 옵니다. 화면을 켜두세요!");
+        document.getElementById('setup').style.display = 'none';
+
+        setTimeout(() => {
+            document.getElementById('call-screen').style.display = 'flex';
+            
+            // 무한 진동 시작 (2초 패턴: 1.2초 울리고 0.8초 쉬기)
+            if (navigator.vibrate) {
+                // 첫 진동 즉시 실행
+                navigator.vibrate([1200, 800]);
+                
+                // 이후 2초마다 계속 반복
+                vibrationInterval = setInterval(() => {
+                    navigator.vibrate([1200, 800]);
+                }, 2000);
+            }
+        }, sec * 1000);
+    }
+
+    function endCall() {
+        // 진동 반복 멈추기
+        if (vibrationInterval) {
+            clearInterval(vibrationInterval);
+            navigator.vibrate(0); // 현재 울리는 진동도 즉시 중단
         }
-
-        function startTimer() {
-            const name = document.getElementById('callerName').value;
-            const sec = document.getElementById('delay').value;
-            document.getElementById('display-name').innerText = name;
-
-            alert(sec + "초 뒤에 전화가 옵니다. 화면을 켜두세요!");
-            document.getElementById('setup').style.display = 'none';
-
-            setTimeout(() => {
-                document.getElementById('call-screen').style.display = 'flex';
-                if (navigator.vibrate) navigator.vibrate([500, 500, 500, 500]);
-            }, sec * 1000);
-        }
-
-        function endCall() {
-            location.reload();
-        }
-    </script>
+        location.reload(); // 앱 초기화
+    }
+</script>
 </body>
 </html>
